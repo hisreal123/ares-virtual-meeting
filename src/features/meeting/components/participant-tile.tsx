@@ -101,7 +101,7 @@ export function ParticipantTile({
       ) : (
         <div
           className={`flex items-center justify-center rounded-full font-medium text-white ${
-            compact ? 'size-8 text-[11px]' : 'aspect-square h-[44%] [container-type:inline-size]'
+            compact ? 'size-8 text-[11px]' : 'aspect-square h-[44%] @container'
           }`}
           style={{ backgroundColor: AVATAR_COLORS[colorIndex] }}
         >
