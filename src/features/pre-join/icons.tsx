@@ -152,20 +152,28 @@ export function MicOnIcon({ size = 20, className, ...props }: IconProps) {
   )
 }
 
-export function SpeakerIcon() {
+export function SpeakerIcon({ size = 18, className, ...props }: IconProps) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M4 9.5v5h3.2L12 18.2V5.8L7.2 9.5H4z" fill="#BDBDBD" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden
+      {...props}
+    >
+      <path d="M4 9.5v5h3.2L12 18.2V5.8L7.2 9.5H4z" fill="currentColor" />
       <path
         d="M15.5 9a4 4 0 010 6"
-        stroke="#BDBDBD"
+        stroke="currentColor"
         strokeWidth="1.4"
         strokeLinecap="round"
         fill="none"
       />
       <path
         d="M17.5 6.5a7.5 7.5 0 010 11"
-        stroke="#BDBDBD"
+        stroke="currentColor"
         strokeWidth="1.4"
         strokeLinecap="round"
         fill="none"

@@ -35,9 +35,7 @@ export const MicRow = forwardRef<HTMLDivElement, MicRowProps>(
               'flex min-w-0 items-center gap-2.5 border-0 bg-transparent p-0',
               !hasDevices
                 ? 'cursor-default text-teams-subtle'
-                : micToggle
-                  ? 'cursor-pointer text-teams-brand'
-                  : 'cursor-pointer text-teams-subtle',
+                : 'cursor-pointer text-[#242424] hover:text-teams-brand',
             )}
           >
             {micToggle ? (

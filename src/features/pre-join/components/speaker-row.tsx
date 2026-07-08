@@ -31,7 +31,7 @@ export function SpeakerRow({ onOpenAudioSettings }: SpeakerRowProps) {
           className={cn(
             'flex min-w-0 items-center gap-2.5 border-0 bg-transparent p-0',
             hasDevices
-              ? 'cursor-pointer text-teams-brand'
+              ? 'cursor-pointer text-[#242424] hover:text-teams-brand'
               : 'cursor-default text-teams-subtle',
           )}
         >
