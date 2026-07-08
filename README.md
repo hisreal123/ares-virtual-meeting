@@ -13,11 +13,3 @@ bun install
 bun run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173).
-
-## Environment variables
-
-```env
-# Meeting page — number of participant tiles (coming soon)
-VITE_PARTICIPANT_COUNT=6
-```
