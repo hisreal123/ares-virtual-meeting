@@ -11,6 +11,7 @@ type ParticipantTileProps = {
   mirror?: boolean
   muted?: boolean
   pinned?: boolean
+  speaking?: boolean
   onTogglePin?: () => void
 }
 
@@ -41,6 +42,7 @@ export function ParticipantTile({
   mirror,
   muted,
   pinned,
+  speaking,
   onTogglePin,
 }: ParticipantTileProps) {
   const colorIndex = name.length % AVATAR_COLORS.length
@@ -48,6 +50,7 @@ export function ParticipantTile({
   const tileRef = useRef<HTMLDivElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [videoErrored, setVideoErrored] = useState(false)
 
   useEffect(() => {
     if (videoRef.current) {
@@ -75,9 +78,9 @@ export function ParticipantTile({
       ref={tileRef}
       onClick={() => setMenuOpen(true)}
       onMouseLeave={() => setMenuOpen(false)}
-      className={`group relative flex items-center justify-center overflow-hidden border border-white/10 bg-[#292929] ${
-        square ? '' : 'rounded-md'
-      } ${fill ? 'h-full w-full' : 'aspect-video'}`}
+      className={`group relative flex items-center justify-center overflow-hidden bg-[#292929] ${
+        speaking ? 'border-2 border-teams-brand' : 'border border-white/10'
+      } ${square ? '' : 'rounded-md'} ${fill ? 'h-full w-full' : 'aspect-video'}`}
       style={{ backgroundImage: TILE_TINT }}
     >
       {stream ? (
@@ -88,14 +91,16 @@ export function ParticipantTile({
           muted
           className={`h-full w-full object-cover ${mirror ? '-scale-x-100' : ''}`}
         />
-      ) : videoSrc ? (
+      ) : videoSrc && !videoErrored ? (
         <video
+          key={videoSrc}
           autoPlay
           loop
           playsInline
           muted
           preload="none"
           src={isVisible ? videoSrc : undefined}
+          onError={() => setVideoErrored(true)}
           className="h-full w-full object-cover object-top"
         />
       ) : (

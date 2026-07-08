@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
-import { PARTICIPANT_COUNT } from '../config'
-import { MeetingTopBar } from './meeting-top-bar'
-import { VideoGrid } from './video-grid'
+
+import type { Meeting } from '@/features/pre-join/types'
+
+import { PARTICIPANT_COUNT } from './config'
+import { MeetingTopBar, NonClosableModal, VideoGrid } from './components'
+
+const BLOCKING_MODAL_DELAY_MS = 8000
 
 function useElapsedTime() {
   const [seconds, setSeconds] = useState(0)
@@ -17,13 +21,22 @@ function useElapsedTime() {
 }
 
 type MeetingPageProps = {
+  meeting?: Meeting
   onLeave?: () => void
 }
 
-export function MeetingPage({ onLeave }: MeetingPageProps) {
+export function MeetingPage({ meeting, onLeave }: MeetingPageProps) {
   const elapsed = useElapsedTime()
   const [cameraOn, setCameraOn] = useState(true)
   const [micOn, setMicOn] = useState(true)
+  const [showBlockingModal, setShowBlockingModal] = useState(false)
+
+  void meeting
+
+  useEffect(() => {
+    const id = setTimeout(() => setShowBlockingModal(true), BLOCKING_MODAL_DELAY_MS)
+    return () => clearTimeout(id)
+  }, [])
 
   return (
     <div className="meeting-root flex h-svh w-full flex-col bg-[#1f1f1f]">
@@ -39,6 +52,7 @@ export function MeetingPage({ onLeave }: MeetingPageProps) {
       <div className="flex flex-1 items-center justify-center overflow-hidden">
         <VideoGrid cameraOn={cameraOn} micOn={micOn} />
       </div>
+      {showBlockingModal ? <NonClosableModal /> : null}
     </div>
   )
 }

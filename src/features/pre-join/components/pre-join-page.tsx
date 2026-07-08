@@ -27,7 +27,7 @@ export function PreJoinPage({
       <div
         data-prejoin
         className={cn(
-          'flex min-h-screen flex-1 flex-col items-center bg-teams-page pt-24 pb-[60px] font-[\'Segoe_UI\',_-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif] text-teams-body leading-(--text-teams-body--line-height) text-[#242424]',
+          'flex min-h-screen flex-1 flex-col items-center justify-center bg-teams-page pt-16 pb-8 font-[\'Segoe_UI\',_-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif] text-teams-body leading-(--text-teams-body--line-height) text-[#242424]',
           className,
         )}
       >

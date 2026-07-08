@@ -40,4 +40,4 @@ function Spinner({
   )
 }
 
-export { Spinner, spinnerVariants }
+export { Spinner }

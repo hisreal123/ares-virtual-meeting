@@ -1,11 +1,9 @@
 import { useState } from 'react'
+
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+
 import { backgroundOptions } from '../data/backgrounds'
-import {
-  CheckmarkIcon,
-  ChevronIcon,
-  NoBackgroundIcon,
-  UploadIcon,
-} from '../icons'
+import { CheckmarkIcon, ChevronIcon, NoBackgroundIcon } from '../icons'
 import { SettingsBarShell } from './settings-bar-shell'
 
 export type BlurVariant = 'standard' | 'portrait'
@@ -33,18 +31,18 @@ export function BackgroundSettingsPanel({
 
   return (
     <SettingsBarShell title="Background settings" onClose={onClose}>
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
           onClick={() => onSelectionChange('none')}
           aria-pressed={selection === 'none'}
-          className="flex aspect-video flex-col items-center justify-center gap-1 rounded border border-teams-border bg-white text-[12px] text-[#424242] hover:bg-[#f5f5f5]"
+          className="flex aspect-video max-w-28 flex-col items-center justify-center gap-1 rounded border border-teams-border bg-white text-[12px] text-[#424242] hover:bg-[#f5f5f5]"
         >
           <NoBackgroundIcon size={20} />
           None
         </button>
 
-        <div className="relative">
+        <div className="relative max-w-28">
           <button
             type="button"
             onClick={() => onSelectionChange('blur')}
@@ -55,26 +53,52 @@ export function BackgroundSettingsPanel({
           >
             <span className="flex items-center gap-1">
               <span className="size-4 rounded bg-[repeating-linear-gradient(45deg,#e0e0e0,#e0e0e0_2px,#f5f5f5_2px,#f5f5f5_4px)]" />
-              <span
-                role="button"
-                tabIndex={0}
-                aria-label="Choose blur type"
-                aria-expanded={showBlurMenu}
-                onClick={(event) => {
-                  event.stopPropagation()
-                  setShowBlurMenu((open) => !open)
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    setShowBlurMenu((open) => !open)
+              <Popover open={showBlurMenu} onOpenChange={setShowBlurMenu}>
+                <PopoverTrigger
+                  render={
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Choose blur type"
+                      onClick={(event: React.MouseEvent) => {
+                        event.stopPropagation()
+                      }}
+                      onKeyDown={(event: React.KeyboardEvent) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.stopPropagation()
+                        }
+                      }}
+                      className="flex items-center rounded hover:text-teams-brand"
+                    />
                   }
-                }}
-                className="flex items-center rounded hover:text-teams-brand"
-              >
-                <ChevronIcon />
-              </span>
+                >
+                  <ChevronIcon />
+                </PopoverTrigger>
+                <PopoverContent align="start" className="w-40">
+                  <div role="radiogroup" aria-label="Blur type">
+                    {(['standard', 'portrait'] as const).map((variant) => (
+                      <button
+                        key={variant}
+                        type="button"
+                        role="radio"
+                        aria-checked={blurVariant === variant}
+                        className="flex w-full cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-1.5 py-1.5 text-left text-[13px] text-[#242424] hover:bg-[#f5f5f5]"
+                        onClick={() => {
+                          setBlurVariant(variant)
+                          onSelectionChange('blur')
+                          setShowBlurMenu(false)
+                        }}
+                      >
+                        <CheckmarkIcon
+                          size={16}
+                          className={blurVariant === variant ? 'text-teams-brand' : 'invisible'}
+                        />
+                        {variant === 'standard' ? 'Standard blur' : 'Portrait blur'}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </span>
             {blurVariant === 'standard' ? 'Standard blur' : 'Portrait blur'}
             {selection === 'blur' ? (
@@ -84,44 +108,7 @@ export function BackgroundSettingsPanel({
               />
             ) : null}
           </button>
-
-          {showBlurMenu ? (
-            <div
-              className="absolute top-[calc(100%+4px)] left-0 z-10 w-40 rounded border border-teams-border bg-white py-1 shadow-[0_4px_16px_rgba(0,0,0,0.14)]"
-              role="menu"
-              aria-label="Blur type"
-            >
-              {(['standard', 'portrait'] as const).map((variant) => (
-                <button
-                  key={variant}
-                  type="button"
-                  role="menuitemradio"
-                  aria-checked={blurVariant === variant}
-                  className="flex w-full cursor-pointer items-center gap-2 border-0 bg-transparent px-3 py-1.5 text-left text-[13px] text-[#242424] hover:bg-[#f5f5f5]"
-                  onClick={() => {
-                    setBlurVariant(variant)
-                    onSelectionChange('blur')
-                    setShowBlurMenu(false)
-                  }}
-                >
-                  <CheckmarkIcon
-                    size={16}
-                    className={blurVariant === variant ? 'text-teams-brand' : 'invisible'}
-                  />
-                  {variant === 'standard' ? 'Standard blur' : 'Portrait blur'}
-                </button>
-              ))}
-            </div>
-          ) : null}
         </div>
-
-        <button
-          type="button"
-          className="flex aspect-video flex-col items-center justify-center gap-1 rounded border border-teams-border bg-white text-[12px] text-[#424242] hover:bg-[#f5f5f5]"
-        >
-          <UploadIcon size={20} />
-          Add new
-        </button>
 
         {backgroundOptions.map((background) => {
           const isSelected = isSameSelection(selection, { imageId: background.id })
@@ -131,7 +118,7 @@ export function BackgroundSettingsPanel({
               type="button"
               onClick={() => onSelectionChange({ imageId: background.id })}
               aria-pressed={isSelected}
-              className={`relative aspect-video overflow-hidden rounded border bg-white ${
+              className={`relative aspect-video max-w-28 overflow-hidden rounded border bg-white ${
                 isSelected ? 'border-2 border-teams-brand' : 'border-teams-border'
               }`}
             >

@@ -10,6 +10,7 @@ type MediaSettingsGridProps = {
   mirrorVideo: boolean
   onOpenVideoSettings: () => void
   onOpenBackgroundSettings: () => void
+  onOpenAudioSettings?: () => void
   onRefreshDevices: () => void
   onJoin?: () => void
 }
@@ -21,6 +22,7 @@ export function MediaSettingsGrid({
   mirrorVideo,
   onOpenVideoSettings,
   onOpenBackgroundSettings,
+  onOpenAudioSettings,
   onRefreshDevices,
   onJoin,
 }: MediaSettingsGridProps) {
@@ -36,7 +38,7 @@ export function MediaSettingsGrid({
           onOpenBackgroundSettings={onOpenBackgroundSettings}
           onRefreshDevices={onRefreshDevices}
         />
-        <AudioPanel />
+        <AudioPanel onOpenAudioSettings={onOpenAudioSettings} />
       </div>
       <JoinActions onJoin={onJoin} />
     </>

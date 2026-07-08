@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PARTICIPANT_COUNT } from '../config'
 import { useLocalCamera } from '../hooks/use-local-camera'
+import { useSpeakingIndicator } from '../hooks/use-speaking-indicator'
 import { ParticipantTile } from './participant-tile'
 
 const NAME_POOL = ['Priya Sharma', 'Jordan Lee', 'Sam Patel', 'Alex Kim', 'Morgan Reyes', 'Taylor Brooks']
@@ -37,6 +38,7 @@ type VideoGridProps = {
 
 export function VideoGrid({ cameraOn, micOn }: VideoGridProps) {
   const stream = useLocalCamera(cameraOn)
+  const isLocalSpeaking = useSpeakingIndicator(micOn)
   const participants = useParticipants(micOn)
   const columns = Math.ceil(Math.sqrt(participants.length))
   const [pinnedName, setPinnedName] = useState<string | null>(null)
@@ -59,6 +61,7 @@ export function VideoGrid({ cameraOn, micOn }: VideoGridProps) {
               stream={pinned.isLocal ? stream : undefined}
               videoSrc={pinned.isLocal ? undefined : pinned.videoSrc}
               mirror={pinned.isLocal}
+              speaking={pinned.isLocal && isLocalSpeaking}
               fill
             />
           </div>
@@ -72,6 +75,7 @@ export function VideoGrid({ cameraOn, micOn }: VideoGridProps) {
                   stream={participant.isLocal ? stream : undefined}
                   videoSrc={participant.isLocal ? undefined : participant.videoSrc}
                   mirror={participant.isLocal}
+                  speaking={participant.isLocal && isLocalSpeaking}
                   compact
                   fill
                 />
@@ -97,6 +101,7 @@ export function VideoGrid({ cameraOn, micOn }: VideoGridProps) {
           stream={participant.isLocal ? stream : undefined}
           videoSrc={participant.isLocal ? undefined : participant.videoSrc}
           mirror={participant.isLocal}
+          speaking={participant.isLocal && isLocalSpeaking}
           fill
         />
       ))}

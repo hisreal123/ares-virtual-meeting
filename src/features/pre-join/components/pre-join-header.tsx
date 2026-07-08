@@ -8,7 +8,7 @@ export function PreJoinHeader({
   title = 'Microsoft Teams meeting',
 }: PreJoinHeaderProps) {
   return (
-    <header className="mb-10 flex flex-col items-center">
+    <header className="mb-5 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2.5">
         <img
           src="/assets/images/Microsoft_Office_Teams_Logo_64px.png"

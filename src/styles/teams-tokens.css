@@ -492,5 +492,6 @@
     color 0.2s ease,
     opacity 0.2s ease,
     transform 0.2s ease,
+    scale 0.2s ease,
     box-shadow 0.2s ease;
 }

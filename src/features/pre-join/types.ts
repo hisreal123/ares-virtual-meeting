@@ -9,6 +9,29 @@ export type PreJoinFormState = {
   microphoneMuted: boolean
 }
 
+export type MeetingAsset = {
+  id: number
+  asset_type: string
+  description: string | null
+  owner: string
+  path: string
+  role: string | null
+}
+
+export type Meeting = {
+  id: number
+  meeting_id: string
+  passcode: string
+  title: string
+  host_name: string
+  size: number
+  current_participants: number
+  is_ended: boolean
+  is_expired: boolean
+  created_at: string
+  assets: MeetingAsset[]
+}
+
 export type PreJoinMeetingInfo = {
   meetingTitle: string
 }

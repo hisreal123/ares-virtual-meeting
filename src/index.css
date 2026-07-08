@@ -6,6 +6,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@keyframes teams-logo-bounce-in {
+  from {
+    scale: 0;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
