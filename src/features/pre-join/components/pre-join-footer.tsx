@@ -1,6 +1,6 @@
 export function PreJoinFooter() {
   return (
-    <footer className="mt-[120px] flex items-center justify-center gap-3">
+    <footer className="flex items-center -mb-6 justify-center gap-3">
       <a href="#sign-in" className="text-[13px] text-teams-brand underline">
         Sign in
       </a>

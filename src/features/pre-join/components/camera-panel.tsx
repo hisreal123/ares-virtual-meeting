@@ -96,7 +96,7 @@ export function CameraPanel({
 
   return (
     <div className="relative box-border flex w-[509px] shrink-0 flex-col overflow-visible rounded border border-teams-border bg-white">
-      <div className="relative box-border flex w-full shrink-0 flex-col items-center justify-center gap-3 overflow-hidden rounded-t bg-[#fbfafa] aspect-video">
+      <div className="relative box-border flex w-full shrink-0 flex-col items-center justify-center gap-3 overflow-hidden rounded-t bg-[#fafafa] aspect-video">
         {cameraOn ? (
           <video
             ref={videoRef}
@@ -118,15 +118,14 @@ export function CameraPanel({
       <div
         role="toolbar"
         aria-label="Video options"
-        className="box-border flex h-[50px] shrink-0 items-center gap-3.5 border-t border-teams-border p-[7px]"
+        className="box-border flex h-[44px] shrink-0 items-center gap-3.5 border-t border-teams-border p-[7px]"
       >
-        <div className="relative">
+        <div className="relative flex items-center gap-1">
           <button
             type="button"
-            className="group flex cursor-pointer items-center gap-1 border-0 bg-transparent p-0 text-teams-muted"
-            aria-label="Select camera"
-            aria-expanded={showCameraMenu}
-            onClick={() => setShowCameraMenu((open) => !open)}
+            className="group flex cursor-pointer items-center border-0 bg-transparent p-0 text-teams-muted"
+            aria-label={cameraOn ? 'Turn camera off' : 'Turn camera on'}
+            onClick={() => void handleCameraToggle(!cameraOn)}
           >
             {cameraOn ? (
               <CameraOnIcon
@@ -136,10 +135,18 @@ export function CameraPanel({
             ) : (
               <CameraOffIcon
                 size={20}
-                className="text-teams-danger group-hover:text-teams-brand"
+                className="text-teams-muted group-hover:text-teams-brand"
               />
             )}
-            <span className="flex items-center text-teams-muted">
+          </button>
+          <button
+            type="button"
+            className="group flex cursor-pointer items-center border-0 bg-transparent p-0 text-teams-muted"
+            aria-label="Select camera"
+            aria-expanded={showCameraMenu}
+            onClick={() => setShowCameraMenu((open) => !open)}
+          >
+            <span className="flex items-center text-teams-muted group-hover:text-teams-brand">
               <ChevronIcon />
             </span>
           </button>
@@ -200,19 +207,20 @@ export function CameraPanel({
         <button
           type="button"
           onClick={onOpenBackgroundSettings}
-          className="group flex cursor-pointer items-center gap-2 border-0 bg-transparent p-0 text-teams-body leading-(--text-teams-body--line-height) font-semibold text-[#424242] transition-colors hover:text-teams-brand"
+          disabled={!cameraOn}
+          className="group flex items-center gap-2 border-0 bg-transparent p-0 text-teams-body leading-(--text-teams-body--line-height) font-semibold text-[#424242] transition-colors enabled:cursor-pointer enabled:hover:text-teams-brand disabled:cursor-not-allowed disabled:opacity-50"
         >
           <span className="relative inline-flex size-5 shrink-0 items-center justify-center">
             <BackgroundFiltersIcon
               size={20}
-              className="text-teams-subtle transition-opacity group-hover:opacity-0"
+              className="text-teams-subtle transition-opacity group-enabled:group-hover:opacity-0"
             />
             <BackgroundFiltersFilledIcon
               size={20}
-              className="absolute text-teams-brand opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute text-teams-brand opacity-0 transition-opacity group-enabled:group-hover:opacity-100"
             />
           </span>
-          <span className="transition-colors group-hover:text-teams-brand">
+          <span className="transition-colors group-enabled:group-hover:text-teams-brand">
             Background filters
           </span>
         </button>

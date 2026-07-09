@@ -27,18 +27,28 @@ export function PreJoinPage({
       <div
         data-prejoin
         className={cn(
-          'flex min-h-screen flex-1 flex-col items-center justify-center bg-teams-page pt-16 pb-8 font-[\'Segoe_UI\',_-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif] text-teams-body leading-(--text-teams-body--line-height) text-[#242424]',
+          'flex min-h-screen flex-1 flex-col items-center bg-teams-page py-6 font-[\'Segoe_UI\',_-apple-system,BlinkMacSystemFont,Roboto,Helvetica,Arial,sans-serif] text-teams-body leading-(--text-teams-body--line-height) text-[#242424]',
           className,
         )}
       >
-        {profile ? (
-          <section aria-label="Signed-in profile">{profile}</section>
+        <div className="flex flex-1 flex-col items-center justify-center">
+          {profile ? (
+            <section aria-label="Signed-in profile">{profile}</section>
+          ) : null}
+          {header ? (
+            <section aria-label="Meeting header">{header}</section>
+          ) : null}
+          {mediaSettings ? (
+            <section aria-label="Audio and video settings">
+              {mediaSettings}
+            </section>
+          ) : null}
+        </div>
+        {footer ? (
+          <section aria-label="Help links" className="mt-auto">
+            {footer}
+          </section>
         ) : null}
-        {header ? <section aria-label="Meeting header">{header}</section> : null}
-        {mediaSettings ? (
-          <section aria-label="Audio and video settings">{mediaSettings}</section>
-        ) : null}
-        {footer ? <section aria-label="Help links">{footer}</section> : null}
       </div>
       {rightBar}
     </div>

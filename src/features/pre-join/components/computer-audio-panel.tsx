@@ -53,12 +53,12 @@ export function ComputerAudioPanel({
   return (
     <div
       ref={panelRef}
-      className="relative flex h-[335px] flex-1 flex-col gap-1.5 overflow-visible bg-transparent"
+      className="relative flex h-[331px] flex-1 flex-col gap-1.5 overflow-visible bg-transparent"
     >
       <div className="flex min-h-0 flex-1 flex-col overflow-visible rounded border border-teams-border bg-white">
         <button
           type="button"
-          className="flex min-h-[96px] w-full flex-1 cursor-pointer items-center gap-3.5 border-0 border-b border-teams-border bg-transparent px-[15px] text-left"
+          className="flex min-h-[80px] w-full flex-1 cursor-pointer items-center gap-3.5 border-0 border-b border-teams-border bg-transparent px-[15px] text-left"
         >
           <PrejoinRadio selected />
           <span className="text-teams-body leading-(--text-teams-body--line-height) font-semibold text-teams-muted">
@@ -66,7 +66,7 @@ export function ComputerAudioPanel({
           </span>
         </button>
 
-        <div className="box-border flex h-[114px] shrink-0 flex-col gap-1 overflow-visible px-[15px] py-[13px]">
+        <div className="box-border flex h-[130px] shrink-0 flex-col gap-1 overflow-visible bg-[#fbfafa] px-[15px] py-[13px]">
           <MicRow
             ref={toggleRef}
             micToggle={micToggle}

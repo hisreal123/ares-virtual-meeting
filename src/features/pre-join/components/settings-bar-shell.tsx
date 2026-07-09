@@ -17,8 +17,8 @@ export function SettingsBarShell({
       aria-label={title}
       className="@container relative box-border flex h-screen w-[300px] shrink-0 flex-col overflow-y-auto border-l border-teams-border bg-teams-page"
     >
-      <div className="mt-[3px] flex items-center justify-between border-b border-teams-border px-5 py-3">
-        <h2 className="text-lg font-semibold text-[#242424]">{title}</h2>
+      <div className="flex items-center justify-between border-b border-teams-border px-5 py-3">
+        <h2 className="text-md font-semibold text-[#242424]">{title}</h2>
         <button
           type="button"
           aria-label={`Close ${title.toLowerCase()}`}
