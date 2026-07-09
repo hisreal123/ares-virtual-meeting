@@ -61,7 +61,7 @@ export function PreJoinScreen({
 
   return (
     <PreJoinPage
-      header={<PreJoinHeader title={meeting?.title} />}
+      header={<PreJoinHeader />}
       mediaSettings={
         <MediaSettingsGrid
           devices={devices}

@@ -1,12 +1,6 @@
 import { NameInput } from './name-input'
 
-type PreJoinHeaderProps = {
-  title?: string
-}
-
-export function PreJoinHeader({
-  title = 'Microsoft Teams meeting',
-}: PreJoinHeaderProps) {
+export function PreJoinHeader() {
   return (
     <header className="mb-5 flex flex-col items-center">
       <div className="flex flex-col items-center gap-2.5">
@@ -19,7 +13,7 @@ export function PreJoinHeader({
         />
         <h1 className="m-0 text-center leading-none">
           <span className="block max-w-full truncate text-teams-title leading-(--text-teams-title--line-height) font-semibold text-[#242424]">
-            {title}
+            Microsoft Teams meeting
           </span>
         </h1>
       </div>
