@@ -485,13 +485,38 @@
   width: 100%;
 }
 
-.meeting-root *,
-.teams-transition-root * {
+* {
   transition:
     background-color 0.2s ease,
+    border-color 0.2s ease,
     color 0.2s ease,
     opacity 0.2s ease,
     transform 0.2s ease,
+    translate 0.2s ease,
     scale 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    width 0.2s ease,
+    height 0.2s ease,
+    display 0.2s allow-discrete,
+    overlay 0.2s allow-discrete;
+}
+
+@starting-style {
+  * {
+    opacity: 0;
+  }
+}
+
+.tile-no-transition {
+  transition: none;
+}
+
+.pin-menu {
+  translate: 0 -50%;
+}
+
+@starting-style {
+  .pin-menu {
+    translate: -8px -50%;
+  }
 }

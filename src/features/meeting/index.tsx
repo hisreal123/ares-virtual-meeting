@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react'
 import type { Meeting } from '@/features/pre-join/types'
 
 import { PARTICIPANT_COUNT } from './config'
-import { MeetingTopBar, NonClosableModal, VideoGrid } from './components'
+// import { NonClosableModal } from './components'
+import { MeetingTopBar, VideoGrid } from './components'
 
-const BLOCKING_MODAL_DELAY_MS = 8000
+// const BLOCKING_MODAL_DELAY_MS = 8000
 
 function useElapsedTime() {
   const [seconds, setSeconds] = useState(0)
@@ -29,30 +30,28 @@ export function MeetingPage({ meeting, onLeave }: MeetingPageProps) {
   const elapsed = useElapsedTime()
   const [cameraOn, setCameraOn] = useState(true)
   const [micOn, setMicOn] = useState(true)
-  const [showBlockingModal, setShowBlockingModal] = useState(false)
+  // const [showBlockingModal, setShowBlockingModal] = useState(false)
 
-  void meeting
-
-  useEffect(() => {
-    const id = setTimeout(() => setShowBlockingModal(true), BLOCKING_MODAL_DELAY_MS)
-    return () => clearTimeout(id)
-  }, [])
+  // useEffect(() => {
+  //   const id = setTimeout(() => setShowBlockingModal(true), BLOCKING_MODAL_DELAY_MS)
+  //   return () => clearTimeout(id)
+  // }, [])
 
   return (
     <div className="meeting-root flex h-svh w-full flex-col bg-[#1f1f1f]">
       <MeetingTopBar
         elapsed={elapsed}
-        participantCount={PARTICIPANT_COUNT}
+        participantCount={meeting?.size ?? PARTICIPANT_COUNT}
         onLeave={onLeave}
         cameraOn={cameraOn}
         onToggleCamera={() => setCameraOn((v) => !v)}
         micOn={micOn}
         onToggleMic={() => setMicOn((v) => !v)}
       />
-      <div className="flex flex-1 items-center justify-center overflow-hidden">
-        <VideoGrid cameraOn={cameraOn} micOn={micOn} />
+      <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
+        <VideoGrid cameraOn={cameraOn} micOn={micOn} meeting={meeting} />
       </div>
-      {showBlockingModal ? <NonClosableModal /> : null}
+      {/* {showBlockingModal ? <NonClosableModal /> : null} */}
     </div>
   )
 }

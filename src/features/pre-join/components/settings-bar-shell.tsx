@@ -15,7 +15,7 @@ export function SettingsBarShell({
     <aside
       role="dialog"
       aria-label={title}
-      className="@container relative box-border flex h-screen w-[300px] shrink-0 flex-col overflow-y-auto border-l border-teams-border bg-teams-page"
+      className="@container relative box-border flex h-screen w-75 shrink-0 flex-col overflow-y-auto border-l border-teams-border bg-teams-page"
     >
       <div className="flex items-center justify-between border-b border-teams-border px-5 py-3">
         <h2 className="text-md font-semibold text-[#242424]">{title}</h2>
