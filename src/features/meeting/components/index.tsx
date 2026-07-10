@@ -1,3 +1,4 @@
+export { CameraErrorBanner } from './camera-error-banner'
 export { MeetingToolbar } from './meeting-toolbar'
 export { MeetingTopBar } from './meeting-top-bar'
 export { NonClosableModal } from './non-closable-modal'

@@ -28,7 +28,7 @@ type MeetingPageProps = {
 
 export function MeetingPage({ meeting, onLeave }: MeetingPageProps) {
   const elapsed = useElapsedTime()
-  const [cameraOn, setCameraOn] = useState(true)
+  const [cameraOn, setCameraOn] = useState(false)
   const [micOn, setMicOn] = useState(true)
   // const [showBlockingModal, setShowBlockingModal] = useState(false)
 
