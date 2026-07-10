@@ -11,6 +11,7 @@ import type { ComponentProps } from 'react'
 import { MeetingPage } from '@/features/meeting'
 import { PreJoinScreen } from '@/features/pre-join'
 import { MeetingNotFound } from '@/features/pre-join/components'
+import type { JoinBackgroundSettings } from '@/features/pre-join'
 
 type Meeting = NonNullable<ComponentProps<typeof MeetingPage>['meeting']>
 
@@ -24,7 +25,7 @@ function PreJoinRoute() {
     <PreJoinScreen
       meetingId={meetingId}
       passcode={passcode}
-      onJoin={(meeting) => navigate('/meeting', { state: { meeting } })}
+      onJoin={(meeting, background) => navigate('/meeting', { state: { meeting, background } })}
     />
   )
 }
@@ -32,9 +33,11 @@ function PreJoinRoute() {
 function MeetingRoute() {
   const navigate = useNavigate()
   const location = useLocation()
-  const meeting = (location.state as { meeting?: Meeting } | null)?.meeting
+  const state = location.state as { meeting?: Meeting; background?: JoinBackgroundSettings } | null
+  const meeting = state?.meeting
+  const background = state?.background
 
-  return <MeetingPage meeting={meeting} onLeave={() => navigate('/meet')} />
+  return <MeetingPage meeting={meeting} background={background} onLeave={() => navigate('/meet')} />
 }
 
 function InvalidMeetingLinkRoute() {

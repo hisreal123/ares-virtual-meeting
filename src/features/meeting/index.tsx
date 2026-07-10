@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import type { JoinBackgroundSettings } from '@/features/pre-join'
 import type { Meeting } from '@/features/pre-join/types'
 
 import { PARTICIPANT_COUNT } from './config'
@@ -23,10 +24,13 @@ function useElapsedTime() {
 
 type MeetingPageProps = {
   meeting?: Meeting
+  background?: JoinBackgroundSettings
   onLeave?: () => void
 }
 
-export function MeetingPage({ meeting, onLeave }: MeetingPageProps) {
+const DEFAULT_BACKGROUND: JoinBackgroundSettings = { selection: 'none', blurVariant: 'standard' }
+
+export function MeetingPage({ meeting, background = DEFAULT_BACKGROUND, onLeave }: MeetingPageProps) {
   const elapsed = useElapsedTime()
   const [cameraOn, setCameraOn] = useState(false)
   const [micOn, setMicOn] = useState(true)
@@ -49,7 +53,7 @@ export function MeetingPage({ meeting, onLeave }: MeetingPageProps) {
         onToggleMic={() => setMicOn((v) => !v)}
       />
       <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden">
-        <VideoGrid cameraOn={cameraOn} micOn={micOn} meeting={meeting} />
+        <VideoGrid cameraOn={cameraOn} micOn={micOn} meeting={meeting} background={background} />
       </div>
       {/* {showBlockingModal ? <NonClosableModal /> : null} */}
     </div>

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { VirtualBackgroundVideo } from '@/lib/virtual-background/virtual-background-video'
+
 import type { CameraDevice } from '../hooks/use-camera-devices'
 import {
   BackgroundFiltersFilledIcon,
@@ -9,6 +11,7 @@ import {
   CameraOnIcon,
   ChevronIcon,
 } from '../icons'
+import type { BackgroundSelection, BlurVariant } from '../types'
 import { PrejoinRadio } from './prejoin-radio'
 import { PrejoinSwitch } from './prejoin-switch'
 
@@ -17,6 +20,8 @@ type CameraPanelProps = {
   selectedDeviceId: string | null
   onSelectDevice: (deviceId: string) => void
   mirrorVideo: boolean
+  backgroundSelection: BackgroundSelection
+  blurVariant: BlurVariant
   onOpenVideoSettings: () => void
   onOpenBackgroundSettings: () => void
   onRefreshDevices: () => void
@@ -27,13 +32,15 @@ export function CameraPanel({
   selectedDeviceId,
   onSelectDevice,
   mirrorVideo,
+  backgroundSelection,
+  blurVariant,
   onOpenVideoSettings,
   onOpenBackgroundSettings,
   onRefreshDevices,
 }: CameraPanelProps) {
   const [cameraOn, setCameraOn] = useState(false)
   const [showCameraMenu, setShowCameraMenu] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [rawStream, setRawStream] = useState<MediaStream | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
 
   useEffect(() => {
@@ -42,24 +49,14 @@ export function CameraPanel({
     }
   }, [])
 
-  useEffect(() => {
-    const video = videoRef.current
-    const stream = streamRef.current
-    if (cameraOn && video && stream) {
-      video.srcObject = stream
-    }
-  }, [cameraOn])
-
   async function startStream(deviceId: string | null) {
     streamRef.current?.getTracks().forEach((track) => track.stop())
     const stream = await navigator.mediaDevices.getUserMedia({
       video: deviceId ? { deviceId: { exact: deviceId } } : true,
     })
     streamRef.current = stream
+    setRawStream(stream)
     setCameraOn(true)
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream
-    }
     onRefreshDevices()
   }
 
@@ -67,9 +64,7 @@ export function CameraPanel({
     if (!enabled) {
       streamRef.current?.getTracks().forEach((track) => track.stop())
       streamRef.current = null
-      if (videoRef.current) {
-        videoRef.current.srcObject = null
-      }
+      setRawStream(null)
       setCameraOn(false)
       return
     }
@@ -78,6 +73,7 @@ export function CameraPanel({
       await startStream(selectedDeviceId)
     } catch {
       streamRef.current = null
+      setRawStream(null)
       setCameraOn(false)
     }
   }
@@ -89,6 +85,7 @@ export function CameraPanel({
         await startStream(deviceId)
       } catch {
         streamRef.current = null
+        setRawStream(null)
         setCameraOn(false)
       }
     }
@@ -98,13 +95,12 @@ export function CameraPanel({
     <div className="relative box-border flex w-[509px] shrink-0 flex-col overflow-visible rounded border border-teams-border bg-white">
       <div className="relative box-border flex w-full shrink-0 flex-col items-center justify-center gap-3 overflow-hidden rounded-t bg-[#fafafa] aspect-video">
         {cameraOn ? (
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
+          <VirtualBackgroundVideo
+            stream={rawStream}
+            selection={backgroundSelection}
+            blurVariant={blurVariant}
+            mirror={mirrorVideo}
             className="absolute inset-0 block size-full object-cover"
-            style={mirrorVideo ? { transform: 'scaleX(-1)' } : undefined}
           />
         ) : (
           <>

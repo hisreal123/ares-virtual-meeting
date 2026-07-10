@@ -1,5 +1,9 @@
 export type AudioMode = 'computer' | 'none'
 
+export type BlurVariant = 'standard' | 'portrait'
+
+export type BackgroundSelection = 'none' | 'blur' | { imageId: string }
+
 export type PreJoinFormState = {
   displayName: string
   cameraEnabled: boolean

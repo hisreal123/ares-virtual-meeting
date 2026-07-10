@@ -4,15 +4,16 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 
 import { backgroundOptions } from '../data/backgrounds'
 import { CheckmarkIcon, ChevronIcon, NoBackgroundIcon } from '../icons'
+import type { BackgroundSelection, BlurVariant } from '../types'
 import { SettingsBarShell } from './settings-bar-shell'
 
-export type BlurVariant = 'standard' | 'portrait'
-
-export type BackgroundSelection = 'none' | 'blur' | { imageId: string }
+export type { BackgroundSelection, BlurVariant } from '../types'
 
 type BackgroundSettingsPanelProps = {
   selection: BackgroundSelection
   onSelectionChange: (selection: BackgroundSelection) => void
+  blurVariant: BlurVariant
+  onBlurVariantChange: (variant: BlurVariant) => void
   onClose: () => void
 }
 
@@ -24,9 +25,10 @@ function isSameSelection(a: BackgroundSelection, b: BackgroundSelection) {
 export function BackgroundSettingsPanel({
   selection,
   onSelectionChange,
+  blurVariant,
+  onBlurVariantChange,
   onClose,
 }: BackgroundSettingsPanelProps) {
-  const [blurVariant, setBlurVariant] = useState<BlurVariant>('standard')
   const [showBlurMenu, setShowBlurMenu] = useState(false)
 
   return (
@@ -84,7 +86,7 @@ export function BackgroundSettingsPanel({
                         aria-checked={blurVariant === variant}
                         className="flex w-full cursor-pointer items-center gap-2 rounded-sm border-0 bg-transparent px-1.5 py-1.5 text-left text-[13px] text-[#242424] hover:bg-[#f5f5f5]"
                         onClick={() => {
-                          setBlurVariant(variant)
+                          onBlurVariantChange(variant)
                           onSelectionChange('blur')
                           setShowBlurMenu(false)
                         }}

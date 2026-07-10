@@ -1,4 +1,5 @@
 import type { CameraDevice } from '../hooks/use-camera-devices'
+import type { BackgroundSelection, BlurVariant } from '../types'
 import { AudioPanel } from './audio-panel'
 import { CameraPanel } from './camera-panel'
 import { JoinActions } from './join-actions'
@@ -8,6 +9,8 @@ type MediaSettingsGridProps = {
   selectedDeviceId: string | null
   onSelectDevice: (deviceId: string) => void
   mirrorVideo: boolean
+  backgroundSelection: BackgroundSelection
+  blurVariant: BlurVariant
   onOpenVideoSettings: () => void
   onOpenBackgroundSettings: () => void
   onOpenAudioSettings?: () => void
@@ -20,6 +23,8 @@ export function MediaSettingsGrid({
   selectedDeviceId,
   onSelectDevice,
   mirrorVideo,
+  backgroundSelection,
+  blurVariant,
   onOpenVideoSettings,
   onOpenBackgroundSettings,
   onOpenAudioSettings,
@@ -34,6 +39,8 @@ export function MediaSettingsGrid({
           selectedDeviceId={selectedDeviceId}
           onSelectDevice={onSelectDevice}
           mirrorVideo={mirrorVideo}
+          backgroundSelection={backgroundSelection}
+          blurVariant={blurVariant}
           onOpenVideoSettings={onOpenVideoSettings}
           onOpenBackgroundSettings={onOpenBackgroundSettings}
           onRefreshDevices={onRefreshDevices}

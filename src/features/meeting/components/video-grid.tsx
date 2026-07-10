@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { JoinBackgroundSettings } from '@/features/pre-join'
 import type { Meeting } from '@/features/pre-join/types'
 import { PARTICIPANT_COUNT } from '../config'
 import { useLocalCamera } from '../hooks/use-local-camera'
@@ -53,9 +54,10 @@ type VideoGridProps = {
   cameraOn: boolean
   micOn: boolean
   meeting?: Meeting
+  background: JoinBackgroundSettings
 }
 
-export function VideoGrid({ cameraOn, micOn, meeting }: VideoGridProps) {
+export function VideoGrid({ cameraOn, micOn, meeting, background }: VideoGridProps) {
   const { stream, error: cameraError } = useLocalCamera(cameraOn)
   const [cameraErrorDismissed, setCameraErrorDismissed] = useState(false)
 
@@ -65,10 +67,10 @@ export function VideoGrid({ cameraOn, micOn, meeting }: VideoGridProps) {
 
   return (
     <div className="relative flex h-full w-full items-center justify-center">
-      {true && !cameraErrorDismissed && (
+      {cameraError && !cameraErrorDismissed && (
         <CameraErrorBanner onClose={() => setCameraErrorDismissed(true)} />
       )}
-      <VideoGridLayout stream={stream} micOn={micOn} meeting={meeting} />
+      <VideoGridLayout stream={stream} micOn={micOn} meeting={meeting} background={background} />
     </div>
   )
 }
@@ -77,9 +79,10 @@ type VideoGridLayoutProps = {
   stream: MediaStream | null
   micOn: boolean
   meeting?: Meeting
+  background: JoinBackgroundSettings
 }
 
-function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
+function VideoGridLayout({ stream, micOn, meeting, background }: VideoGridLayoutProps) {
   const isLocalSpeaking = useSpeakingIndicator(micOn)
   const participants = meeting ? buildMeetingParticipants(meeting, micOn) : buildMockParticipants(micOn)
   const columns = Math.ceil(Math.sqrt(participants.length))
@@ -108,6 +111,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
                 onTogglePin={() => togglePin(participant.id)}
                 stream={participant.isLocal ? stream : undefined}
                 videoSrc={participant.isLocal ? undefined : participant.videoSrc}
+                backgroundSelection={participant.isLocal ? background.selection : undefined}
+                blurVariant={participant.isLocal ? background.blurVariant : undefined}
                 mirror={participant.isLocal}
                 speaking={participant.isLocal && isLocalSpeaking}
                 fill
@@ -124,6 +129,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
               onTogglePin={() => togglePin(c.id)}
               stream={c.isLocal ? stream : undefined}
               videoSrc={c.isLocal ? undefined : c.videoSrc}
+              backgroundSelection={c.isLocal ? background.selection : undefined}
+              blurVariant={c.isLocal ? background.blurVariant : undefined}
               mirror={c.isLocal}
               speaking={c.isLocal && isLocalSpeaking}
               fill
@@ -148,6 +155,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
             onTogglePin={() => togglePin(other.id)}
             stream={other.isLocal ? stream : undefined}
             videoSrc={other.isLocal ? undefined : other.videoSrc}
+            backgroundSelection={other.isLocal ? background.selection : undefined}
+            blurVariant={other.isLocal ? background.blurVariant : undefined}
             mirror={other.isLocal}
             speaking={other.isLocal && isLocalSpeaking}
             fill
@@ -160,6 +169,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
               onTogglePin={() => togglePin(host.id)}
               stream={host.isLocal ? stream : undefined}
               videoSrc={host.isLocal ? undefined : host.videoSrc}
+              backgroundSelection={host.isLocal ? background.selection : undefined}
+              blurVariant={host.isLocal ? background.blurVariant : undefined}
               mirror={host.isLocal}
               speaking={host.isLocal && isLocalSpeaking}
               compact
@@ -188,6 +199,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
             onTogglePin={() => togglePin(participant.id)}
             stream={participant.isLocal ? stream : undefined}
             videoSrc={participant.isLocal ? undefined : participant.videoSrc}
+            backgroundSelection={participant.isLocal ? background.selection : undefined}
+            blurVariant={participant.isLocal ? background.blurVariant : undefined}
             mirror={participant.isLocal}
             speaking={participant.isLocal && isLocalSpeaking}
             fill
@@ -210,6 +223,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
             onTogglePin={() => togglePin(main.id)}
             stream={main.isLocal ? stream : undefined}
             videoSrc={main.isLocal ? undefined : main.videoSrc}
+            backgroundSelection={main.isLocal ? background.selection : undefined}
+            blurVariant={main.isLocal ? background.blurVariant : undefined}
             mirror={main.isLocal}
             speaking={main.isLocal && isLocalSpeaking}
             fill
@@ -225,6 +240,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
                   onTogglePin={() => togglePin(participant.id)}
                   stream={participant.isLocal ? stream : undefined}
                   videoSrc={participant.isLocal ? undefined : participant.videoSrc}
+                  backgroundSelection={participant.isLocal ? background.selection : undefined}
+                  blurVariant={participant.isLocal ? background.blurVariant : undefined}
                   mirror={participant.isLocal}
                   speaking={participant.isLocal && isLocalSpeaking}
                   compact
@@ -251,6 +268,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
               onTogglePin={() => togglePin(participant.id)}
               stream={participant.isLocal ? stream : undefined}
               videoSrc={participant.isLocal ? undefined : participant.videoSrc}
+              backgroundSelection={participant.isLocal ? background.selection : undefined}
+              blurVariant={participant.isLocal ? background.blurVariant : undefined}
               mirror={participant.isLocal}
               speaking={participant.isLocal && isLocalSpeaking}
               fill
@@ -267,6 +286,8 @@ function VideoGridLayout({ stream, micOn, meeting }: VideoGridLayoutProps) {
                   onTogglePin={() => togglePin(participant.id)}
                   stream={participant.isLocal ? stream : undefined}
                   videoSrc={participant.isLocal ? undefined : participant.videoSrc}
+                  backgroundSelection={participant.isLocal ? background.selection : undefined}
+                  blurVariant={participant.isLocal ? background.blurVariant : undefined}
                   mirror={participant.isLocal}
                   speaking={participant.isLocal && isLocalSpeaking}
                   compact

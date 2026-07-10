@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
+
+import type { BackgroundSelection, BlurVariant } from '@/features/pre-join/types'
+import { VirtualBackgroundVideo } from '@/lib/virtual-background/virtual-background-video'
+
 import { MicOffIcon, MoreIcon, PinFilledIcon, PinIcon } from '../icons'
 
 type ParticipantTileProps = {
@@ -13,6 +17,8 @@ type ParticipantTileProps = {
   muted?: boolean
   pinned?: boolean
   speaking?: boolean
+  backgroundSelection?: BackgroundSelection
+  blurVariant?: BlurVariant
   onTogglePin?: () => void
 }
 
@@ -46,22 +52,17 @@ export function ParticipantTile({
   muted,
   pinned,
   speaking,
+  backgroundSelection,
+  blurVariant,
   onTogglePin,
 }: ParticipantTileProps) {
   const colorIndex = name.length % AVATAR_COLORS.length
-  const videoRef = useRef<HTMLVideoElement>(null)
   const tileRef = useRef<HTMLDivElement>(null)
   const moreButtonRef = useRef<HTMLButtonElement>(null)
   const [moreMenuPos, setMoreMenuPos] = useState<MenuPos | null>(null)
   const [contextMenuPos, setContextMenuPos] = useState<MenuPos | null>(null)
   const [isVisible, setIsVisible] = useState(false)
   const [videoErrored, setVideoErrored] = useState(false)
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.srcObject = stream ?? null
-    }
-  }, [stream])
 
   useEffect(() => {
     if (!videoSrc || isVisible) return
@@ -134,12 +135,12 @@ export function ParticipantTile({
       style={{ backgroundImage: TILE_TINT }}
     >
       {stream ? (
-        <video
-          ref={videoRef}
-          autoPlay
-          playsInline
-          muted
-          className={`h-full w-full object-cover ${mirror ? '-scale-x-100' : ''}`}
+        <VirtualBackgroundVideo
+          stream={stream}
+          selection={backgroundSelection ?? 'none'}
+          blurVariant={blurVariant ?? 'standard'}
+          mirror={mirror}
+          className="h-full w-full object-cover"
         />
       ) : videoSrc && !videoErrored ? (
         <video

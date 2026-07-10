@@ -14,15 +14,20 @@ import {
   PreJoinHeader,
   PreJoinPage,
 } from './components'
-import type { BackgroundSelection } from './components'
+import type { BackgroundSelection, BlurVariant } from './components'
 import type { Meeting } from './types'
 
 type RightBarView = 'device' | 'background' | null
 
+export type JoinBackgroundSettings = {
+  selection: BackgroundSelection
+  blurVariant: BlurVariant
+}
+
 type PreJoinScreenProps = {
   meetingId?: string
   passcode?: string | null
-  onJoin?: (meeting: Meeting | null) => void
+  onJoin?: (meeting: Meeting | null, background: JoinBackgroundSettings) => void
 }
 
 export function PreJoinScreen({
@@ -35,6 +40,7 @@ export function PreJoinScreen({
   const [mirrorVideo, setMirrorVideo] = useState(true)
   const [backgroundSelection, setBackgroundSelection] =
     useState<BackgroundSelection>('none')
+  const [blurVariant, setBlurVariant] = useState<BlurVariant>('standard')
   const { devices, selectedDeviceId, setSelectedDeviceId, refreshDevices } =
     useCameraDevices()
   const { meeting, error } = useMeetingDetails(meetingId, passcode)
@@ -68,11 +74,13 @@ export function PreJoinScreen({
           selectedDeviceId={selectedDeviceId}
           onSelectDevice={setSelectedDeviceId}
           mirrorVideo={mirrorVideo}
+          backgroundSelection={backgroundSelection}
+          blurVariant={blurVariant}
           onOpenVideoSettings={() => setRightBarView('device')}
           onOpenBackgroundSettings={() => setRightBarView('background')}
           onOpenAudioSettings={() => setRightBarView('device')}
           onRefreshDevices={() => void refreshDevices()}
-          onJoin={() => onJoin?.(meeting)}
+          onJoin={() => onJoin?.(meeting, { selection: backgroundSelection, blurVariant })}
         />
       }
       footer={<PreJoinFooter />}
@@ -90,6 +98,8 @@ export function PreJoinScreen({
           <BackgroundSettingsPanel
             selection={backgroundSelection}
             onSelectionChange={setBackgroundSelection}
+            blurVariant={blurVariant}
+            onBlurVariantChange={setBlurVariant}
             onClose={() => setRightBarView(null)}
           />
         ) : null
